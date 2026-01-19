@@ -1,0 +1,20 @@
+[project]
+name = "storagesim"
+version = "1.0.0"
+requires-python = ">= 3.12"
+authors = [{name = "Daniel Garrett", email = "danielgarrett1120@gmail.com"}]
+description = "Simulation of solar panel to storage tank heat transfer"
+readme = "README.md"
+license = "BSD-3-Clause"
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+dependencies = [
+    "numpy",
+    "scipy",
+    "matplotlib"
+]
+
+[project.optional-dependencies]
+dev = ["black"]
