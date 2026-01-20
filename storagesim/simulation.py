@@ -73,12 +73,14 @@ class Simulator:
         )
 
         # temperature at outlet of solar panel
-        t_out = y + q_c / (self.m_dot * self.water_cp)
+        if self.m_dot > 0:
+            t_out = y + q_c / (self.m_dot * self.water_cp)
+        else:
+            t_out = y
 
         dy_dt = (1.0 / (self.tank_mass * self.water_cp)) * (
             self.m_dot * self.water_cp * (t_out - y) - self.tank_loss * (y - self.t_a)
         )
-        # print(f"dy_dt: {dy_dt}")
 
         return dy_dt
 
@@ -96,11 +98,12 @@ class Simulator:
             self.ode, t_span=[0, duration], y0=np.array([self.tank_temp]), t_eval=t_eval
         )
 
-        return sol.t, sol.y - 273.15
+        return sol.t, sol.y.reshape(-1) - 273.15
 
 
 if __name__ == "__main__":
     sim = Simulator()
-    t, y = sim.solve_ivp(duration=14 * 24 * 3600)
+    # run for 1 hour
+    t, y = sim.solve_ivp(duration=3600)
     print(f"time: {t}")
     print(f"tank temp: {y}")
